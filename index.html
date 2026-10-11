@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CENTUM SATHYA TUITION CENTRE Quiz Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            color: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .glass-card {
+            width: 100%;
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px rgba(255, 255, 255, 0.08) solid;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        
+        .max-w-md { max-width: 450px; }
+        .max-w-4xl { max-width: 900px; }
+        .max-w-2xl { max-width: 700px; }
+
+        .title-main {
+            font-size: 22px;
+            font-weight: 700;
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .subtitle-gradient {
+            font-size: 12px;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #38bdf8;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        select {
+            width: 100%;
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 12px;
+            color: #ffffff;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .btn-primary {
+            width: 100%;
+            background-color: #4f46e5;
+            color: #ffffff;
+            font-weight: 600;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: #4338ca;
+        }
+
+        .btn-logout {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #f87171;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .column-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        @media (min-width: 768px) {
+            .column-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .panel-box {
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid #334155;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .btn-choice-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .btn-selector {
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #cbd5e1;
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .btn-selected {
+            background: rgba(99, 102, 241, 0.2) !important;
+            border-color: #6366f1 !important;
+            color: #818cf8 !important;
+            font-weight: 700;
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            padding: 15px;
+            border-radius: 12px;
+        }
+
+        .stat-val {
+            font-size: 28px;
+            font-weight: 700;
+            margin-top: 5px;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            margin-top: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 14px;
+            border-bottom: 1px solid #334155;
+            font-size: 14px;
+        }
+
+        th {
+            background: #1e293b;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .timer-badge {
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #38bdf8;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-weight: 700;
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            width: 100%;
+            text-align: left;
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #e2e8f0;
+            padding: 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .correct-flash { background: rgba(16, 185, 129, 0.2) !important; border-color: #10b981 !important; color: #34d399 !important; }
+        .wrong-flash { background: rgba(239, 68, 68, 0.2) !important; border-color: #ef4444 !important; color: #f87171 !important; }
+        .hidden { display: none !important; }
+        
+        .written-box {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. LOGIN BOARD -->
+    <div id="login-screen" class="glass-card max-w-md">
+        <h1 class="title-main">CENTUM SATHYA TUITION CENTRE</h1>
+        <p class="subtitle-gradient">Quiz Portal</p>
+        
+        <div class="form-group">
+            <label>Select Portal Role</label>
+            <select id="login-role" onchange="toggleUserDropdown()">
+                <option value="student">Student Portal</option>
+                <option value="admin">Administrator Panel</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Select Profile Name</label>
+            <select id="login-user"></select>
+        </div>
+
+        <button onclick="handleLogin()" class="btn-primary">Enter Portal</button>
+    </div>
+
+    <!-- 2. WORKBENCH HUB -->
+    <div id="dashboard-screen" class="glass-card max-w-4xl hidden">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 15px; margin-bottom: 25px;">
+            <div>
+                <h2 id="welcome-message" style="font-size: 20px; font-weight: 700;"></h2>
+                <div id="user-role-badge" style="font-size: 11px; color: #94a3b8; font-weight: 600; margin-top: 2px;"></div>
+            </div>
+            <button onclick="logout()" class="btn-logout">Log Out</button>
+        </div>
+
+        <!-- ADMIN MATRIX -->
+        <div id="admin-view" class="hidden">
+            <h3 style="font-size: 16px; margin-bottom: 15px; font-weight: 600;">📊 Live Student Progress Ledger</h3>
+            <div class="analytics-grid">
+                <div class="stat-card">
+                    <label>Total Submissions</label>
+                    <div id="admin-stat-total" class="stat-val" style="color: #38bdf8;">0</div>
+                </div>
+                <div class="stat-card">
+                    <label>Science Completed</label>
+                    <div id="admin-stat-science" class="stat-val" style="color: #34d399;">0</div>
+                </div>
+                <div class="stat-card">
+                    <label>Maths Completed</label>
+                    <div id="admin-stat-maths" class="stat-val" style="color: #818cf8;">0</div>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Exam Mode</th>
+                            <th>Subject Column</th>
+                            <th>Performance Metrics</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-log-table"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- STUDENT INTERFACE -->
+        <div id="student-view" class="hidden">
+            <div class="column-grid">
+                <!-- Column 1: Subject Selector -->
+                <div class="panel-box">
+                    <label style="margin-bottom: 12px; color: #cbd5e1;">1. Select Subject Column</label>
+                    <div class="btn-choice-grid">
+                        <button onclick="selectSubject('science')" id="btn-sub-science" class="btn-selector">🧪 Science</button>
+                        <button onclick="selectSubject('maths')" id="btn-sub-maths" class="btn-selector">📐 Maths</button>
+                    </div>
+                </div>
+
+                <!-- Column 2: Quiz Format Selector -->
+                <div class="panel-box">
+                    <label style="margin-bottom: 12px; color: #cbd5e1;">2. Choose Quiz Format</label>
+                    <div class="btn-choice-grid">
+                        <button onclick="selectFormat('mcq')" id="btn-fmt-mcq" class="btn-selector">MCQ Mode (10s)</button>
+                        <button onclick="selectFormat('written')" id="btn-fmt-written" class="btn-selector">Written Mode (2m)</button>
+                    </div>
+                </div>
+            </div>
+            <button onclick="initializeTestEngine()" class="btn-primary" style="padding: 16px;">🚀 Initialize Assessment Engine</button>
+        </div>
+    </div>
+
+    <!-- 3. ACTIVE QUIZ FRAME -->
+    <div id="quiz-screen" class="glass-card max-w-2xl hidden">
+        <div class="quiz-header">
+            <span id="question-index-counter" style="font-size: 12px; font-weight: 700; color: #94a3b8; letter-spacing: 1px;">QUESTION 1 OF --</span>
+            <div id="timer-badge" class="timer-badge">⏱️ <span id="timer-countdown">00</span>s</div>
+        </div>
+
+        <div>
+            <div id="badge-question-type" style="font-size: 11px; font-weight: 700; color: #818cf8; margin-bottom: 10px; text-transform: uppercase;"></div>
+            <h3 id="quiz-question-text" class="question-text"></h3>
+        </div>
+
+        <div id="mcq-options-box" class="options-list hidden"></div>
+        
+        <div id="written-answer-box" class="written-box hidden">
+            <p style="font-size: 13px; color: #fbbf24; margin-bottom: 15px;">📝 Solve this 2-mark, 3-mark, or 5-mark question directly on your notebook exam sheet. Once finished, click the confirmation step below.</p>
+            <button onclick="advanceNextQuestion()" class="btn-primary" style="background-color: #334155;">Mark Solved & Next Question</button>
+        </div>
+    </div>
+
+    <!-- 4. RESULT SHEET -->
+    <div id="result-screen" class="glass-card max-w-md hidden" style="text-align: center;">
+        <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 10px;">Quiz Completed!</h2>
+        <p style="color: #94a3b8; font-size: 14px; margin-bottom: 20px;">The results have been safely synchronized to the secure admin metrics panel log file.</p>
+        
+        <div id="student-score-report" style="background: #1e293b; padding: 15px; border-radius: 8px; margin-bottom: 20px;" class="hidden">
+            <label>Obtained Score Performance</label>
+            <div id="score-text-view" style="font-size: 24px; font-weight: 700; color: #34d399; margin-top: 5px;">0 / 0</div>
+        </div>
+
+        <button onclick="returnToDashboard()" class="btn-primary">Return to Dashboard</button>
+    </div>
+
+    <script src="questions.js"></script>
+    <script>
+        const students = ["aswin karthick", "thara", "janani", "krish", "gowtham", "chanjay", "abdul"];
+        const admins = ["AK", "sathya"];
+
+        let currentUser = null, currentRole = null, selectedSub = null, selectedFmt = null;
+        let activeQuestionsList = [], runningQIdx = 0, timerHook = null, secondsTrack = 0, metricsScore = 0;
+        let globalEvaluationLogs = JSON.parse(localStorage.getItem('quiz_records')) || [];
+
+        window.onload = function() { toggleUserDropdown(); };
+
+        function toggleUserDropdown() {
+            const role = document.getElementById('login-role').value;
+            const targetSelect = document.getElementById('login-user');
+            targetSelect.innerHTML = '';
+            const scopeList = (role === 'student') ? students : admins;
+            scopeList.forEach(name => {
+                let opt = document.createElement('option');
+                opt.value = name; opt.textContent = name.toUpperCase();
+                targetSelect.appendChild(opt);
+            });
+        }
+
+        function handleLogin() {
+            currentRole = document.getElementById('login-role').value;
+            currentUser = document.getElementById('login-user').value;
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('dashboard-screen').classList.remove('hidden');
+            document.getElementById('welcome-message').innerText = "Welcome, " + currentUser.toUpperCase();
+            document.getElementById('user-role-badge').innerText = currentRole === 'admin' ? '🛡️ SYSTEM ADMINISTRATOR' : '🎓 STUDENT MEMBER';
+
+            if (currentRole === 'admin') {
+                document.getElementById('admin-view').classList.remove('hidden');
+                document.getElementById('student-view').classList.add('hidden');
+                computeAdminAnalytics();
+            } else {
+                document.getElementById('admin-view').classList.add('hidden');
+                document.getElementById('student-view').classList.remove('hidden');
+                resetSelectionStates();
+            }
+        }
+
+        function resetSelectionStates() {
+            selectedSub = null; selectedFmt = null;
+            ['btn-sub-science', 'btn-sub-maths', 'btn-fmt-mcq', 'btn-fmt-written'].forEach(id => {
+                document.getElementById(id).className = "btn-selector";
+            });
+        }
+
+        function selectSubject(sub) {
+            selectedSub = sub;
+            document.getElementById('btn-sub-science').className = sub === 'science' ? "btn-selector btn-selected" : "btn-selector";
+            document.getElementById('btn-sub-maths').className = sub === 'maths' ? "btn-selector btn-selected" : "btn-selector";
+        }
+
+        function selectFormat(fmt) {
+            selectedFmt = fmt;
+            document.getElementById('btn-fmt-mcq').className = fmt === 'mcq' ? "btn-selector btn-selected" : "btn-selector";
+            document.getElementById('btn-fmt-written').className = fmt === 'written' ? "btn-selector btn-selected" : "btn-selector";
+        }
+
+        function initializeTestEngine() {
+            if (!selectedSub || !selectedFmt) {
+                alert("⚠️ Please specify both your column Subject and Exam Format to continue.");
+                return;
+            }
+            if (typeof quizDatabase === 'undefined') {
+                alert("⚠️ Dynamic Error: 'questions.js' file not detected in this directory. Ensure both files match the same folder.");
+                return;
+            }
+            activeQuestionsList = quizDatabase[selectedFmt][selectedSub];
+            if (!activeQuestionsList || activeQuestionsList.length === 0) {
+                alert("No active questions available inside this segment category currently.");
+                return;
+            }
+            runningQIdx = 0; metricsScore = 0;
+            document.getElementById('dashboard-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            renderActiveQuestion();
+        }
+
+        function renderActiveQuestion() {
+            clearInterval(timerHook);
+            if (runningQIdx >= activeQuestionsList.length) { concludeQuizSession(); return; }
+
+            const item = activeQuestionsList[runningQIdx];
+            document.getElementById('question-index-counter').innerText = "QUESTION " + (runningQIdx + 1) + " OF " + activeQuestionsList.length;
+            document.getElementById('quiz-question-text').innerText = item.question;
+
+            if (selectedFmt === 'mcq') {
+                document.getElementById('badge-question-type').innerText = "Multiple Choice Question (1 Mark)";
+                document.getElementById('mcq-options-box').classList.remove('hidden');
+                document.getElementById('written-answer-box').classList.add('hidden');
+                const box = document.getElementById('mcq-options-box'); box.innerHTML = '';
+
+                item.options.forEach(opt => {
+                    let btn = document.createElement('button'); btn.className = "option-btn";
+                    btn.innerText = opt; btn.onclick = () => evalMcqResponse(opt, btn);
+                    box.appendChild(btn);
+                });
+                secondsTrack = 10;
+            } else {
+                document.getElementById('badge-question-type').innerText = (item.marks || 2) + " Marks Theoretical Column Question";
+                document.getElementById('mcq-options-box').classList.add('hidden');
+                document.getElementById('written-answer-box').classList.remove('hidden');
+                secondsTrack = 120;
+            }
+            runClockTick();
+            timerHook = setInterval(runClockTick, 1000);
+        }
+
+        function runClockTick() {
+            const display = document.getElementById('timer-countdown');
+            display.innerText = secondsTrack < 10 ? "0" + secondsTrack : secondsTrack;
+            if (secondsTrack <= 3) {
+                document.getElementById('timer-badge').style.color = '#ef4444';
+                document.getElementById('timer-badge').style.borderColor = '#ef4444';
+            } else {
+                document.getElementById('timer-badge').style.color = '#38bdf8';
+                document.getElementById('timer-badge').style.borderColor = '#334155';
+            }
+            if (secondsTrack <= 0) { clearInterval(timerHook); advanceNextQuestion(); }
+            secondsTrack--;
+        }
+
+        function evalMcqResponse(opt, btn) {
+            clearInterval(timerHook);
+            const correctAns = activeQuestionsList[runningQIdx].answer;
+            if (opt === correctAns) { btn.classList.add('correct-flash'); metricsScore++; }
+            else { btn.classList.add('wrong-flash'); }
+            setTimeout(advanceNextQuestion, 700);
+        }
+
+        function advanceNextQuestion() { runningQIdx++; renderActiveQuestion(); }
+
+        function concludeQuizSession() {
+            clearInterval(timerHook);
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            if (selectedFmt === 'mcq') {
+                document.getElementById('student-score-report').classList.remove('hidden');
+                document.getElementById('score-text-view').innerText = metricsScore + " / " + activeQuestionsList.length;
+            } else {
+                document.getElementById('student-score-report').classList.add('hidden');
+            }
+            const logEntry = {
+                student: currentUser, subject: selectedSub, format: selectedFmt,
+                summary: selectedFmt === 'mcq' ? "Scored " + metricsScore + "/" + activeQuestionsList.length : 'Completed subjective review sheet'
+            };
+            globalEvaluationLogs.push(logEntry);
+            localStorage.setItem('quiz_records', JSON.stringify(globalEvaluationLogs));
+        }
+
+        function returnToDashboard() {
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('dashboard-screen').classList.remove('hidden');
+            if (currentRole === 'admin') { computeAdminAnalytics(); }
+            resetSelectionStates();
+        }
+
+        function computeAdminAnalytics() {
+            document.getElementById('admin-stat-total').innerText = globalEvaluationLogs.length;
+            document.getElementById('admin-stat-science').innerText = globalEvaluationLogs.filter(l => l.subject === 'science').length;
+            document.getElementById('admin-stat-maths').innerText = globalEvaluationLogs.filter(l => l.subject === 'maths').length;
+            const tableBody = document.getElementById('admin-log-table'); tableBody.innerHTML = '';
+
+            if (globalEvaluationLogs.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#64748b; padding:20px;">No student records found in logs.</td></tr>';
+                return;
+            }
+            globalEvaluationLogs.forEach(log => {
+                let row = document.createElement('tr');
+                row.innerHTML = `<td>${log.student.toUpperCase()}</td><td>${log.format}</td><td>${log.subject}</td><td>${log.summary}</td>`;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function logout() {
+            clearInterval(timerHook); currentUser = null; currentRole = null;
+            document.getElementById('dashboard-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+            toggleUserDropdown();
+        }
+    </script>
+</body>
+</html>
