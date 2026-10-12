@@ -64,3 +64,200 @@ const quizDatabase = {
         ]
     }
 };
+// CENTUM SATHYA TUITION CENTRE - Question Bank Database
+const quizDatabase = {
+    // MATHS COLUMN SECTIONS
+    maths_type1: [
+        {
+            question: "Check whether the following sequence forms an AP: 0.2, 0.22, 0.222, 0.2222, ...",
+            options: ["It is an AP", "It is not an AP", "It is a geometric progression", "Cannot be determined"],
+            answer: 1
+        },
+        {
+            question: "Find the common difference 'd' for the AP sequence: -1.2, -3.2, -5.2, -7.2, ...",
+            options: ["d = 2", "d = -2", "d = -1.2", "d = 3.2"],
+            answer: 1
+        },
+        {
+            question: "Is the sequence a, 2a, 3a, 4a, ... an Arithmetic Progression?",
+            options: ["Yes, with common difference a", "No, it is not an AP", "Yes, with common difference 2a", "Only if a = 0"],
+            answer: 0
+        },
+        {
+            question: "Find the common difference 'd' of the AP: 1/n, (1+n)/n, (1+2n)/n, ...",
+            options: ["d = n", "d = 1/n", "d = 1", "d = 1+n"],
+            answer: 2
+        },
+        {
+            question: "For the AP: -10, -6, -2, 2, ... find the common difference d and the next two terms a₅, a₆.",
+            options: ["d = -4; a₅ = -2, a₆ = -6", "d = 4; a₅ = 6, a₆ = 10", "d = 4; a₅ = 4, a₆ = 8", "d = 2; a₅ = 4, a₆ = 6"],
+            answer: 1
+        }
+    ],
+    maths_type2: [
+        {
+            question: "Find the 20th term of the AP: 5, 11, 17, 23, ...",
+            options: ["115", "119", "120", "125"],
+            answer: 1
+        },
+        {
+            question: "Find the nth term (an) of the AP: 10, 7, 4, ...",
+            options: ["an = 13 - 3n", "an = 10 + 3n", "an = 7 - 3n", "an = 13 + 3n"],
+            answer: 0
+        }
+    ],
+    maths_trig: [
+        {
+            question: "Evaluate the primary trigonometric identity value: sin²(θ) + cos²(θ)",
+            options: ["0", "1", "-1", "Undefined"],
+            answer: 1
+        }
+    ],
+    
+    // SCIENCE COLUMN SECTIONS 
+    science_light: [
+        {
+            question: "Where should an object be placed in front of a concave mirror to obtain a real image of the same size?",
+            options: ["At Focus (F)", "At Centre of Curvature (C)", "Between C and F", "Beyond C"],
+            answer: 1
+        }
+    ]
+};
+// Runtime Application State
+let activeQuestions = [];
+let currentIdx = 0;
+let studentAnswers = [];
+let examTimer = null;
+let secondsRemaining = 0;
+
+function startExamSimulator(sectionKey) {
+    // 1. Fetch data from questions.js structural object arrays
+    activeQuestions = quizDatabase[sectionKey] || [];
+    
+    if (activeQuestions.length === 0) {
+        alert("This question array section is currently empty!");
+        return;
+    }
+
+    // 2. Initialize application state variables
+    currentIdx = 0;
+    studentAnswers = new Array(activeQuestions.length).fill(null);
+    
+    // 3. Set standard timer constraint: 60 seconds per question
+    secondsRemaining = activeQuestions.length * 60; 
+    
+    // 4. Update UI screen layout visibility switching
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('quiz-window').style.display = 'block';
+    document.getElementById('result-area').innerHTML = '';
+    
+    // 5. Fire up the execution cycles
+    runCountdownEngine();
+    renderActiveQuestion();
+}
+
+function runCountdownEngine() {
+    clearInterval(examTimer);
+    refreshTimerDisplay();
+    
+    examTimer = setInterval(() => {
+        secondsRemaining--;
+        refreshTimerDisplay();
+        
+        if (secondsRemaining <= 0) {
+            clearInterval(examTimer);
+            alert("⏰ Time has expired! Your exam will be submitted automatically.");
+            compileExamScore();
+        }
+    }, 1000);
+}
+
+function refreshTimerDisplay() {
+    const mins = Math.floor(secondsRemaining / 60);
+    const secs = secondsRemaining % 60;
+    const formattedTime = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    document.getElementById('timer-display').innerText = `⏱️ Time Remaining: ${formattedTime}`;
+}
+
+function renderActiveQuestion() {
+    const data = activeQuestions[currentIdx];
+    document.getElementById('question-text').innerText = `Q${currentIdx + 1}. ${data.question}`;
+    
+    const targetUL = document.getElementById('options-list');
+    targetUL.innerHTML = '';
+    
+    data.options.forEach((opt, index) => {
+        const li = document.createElement('li');
+        const checkedState = studentAnswers[currentIdx] === index ? 'checked' : '';
+        
+        li.innerHTML = `
+            <label>
+                <input type="radio" name="sim-opt" value="${index}" ${checkedState}>
+                ${opt}
+            </label>
+        `;
+        targetUL.appendChild(li);
+    });
+
+    // Control structural display boundaries for system buttons
+    document.getElementById('prev-btn').style.visibility = currentIdx === 0 ? 'hidden' : 'visible';
+    document.getElementById('next-btn').innerText = currentIdx === activeQuestions.length - 1 ? 'Submit Exam' : 'Next Question';
+}
+
+function recordSelectedOption() {
+    const chosenRadio = document.querySelector('input[name="sim-opt"]:checked');
+    if (chosenRadio) {
+        studentAnswers[currentIdx] = parseInt(chosenRadio.value);
+    }
+}
+
+function goToPrevQuestion() {
+    recordSelectedOption();
+    if (currentIdx > 0) {
+        currentIdx--;
+        renderActiveQuestion();
+    }
+}
+
+function goToNextQuestion() {
+    recordSelectedOption();
+    if (currentIdx < activeQuestions.length - 1) {
+        currentIdx++;
+        renderActiveQuestion();
+    } else {
+        compileExamScore();
+    }
+}
+
+function compileExamScore() {
+    clearInterval(examTimer);
+    let correctCount = 0;
+    
+    activeQuestions.forEach((item, index) => {
+        if (studentAnswers[index] === item.answer) {
+            correctCount++;
+        }
+    });
+    
+    // Clear viewport objects out and show metrics report screen
+    document.getElementById('options-list').innerHTML = '';
+    document.getElementById('question-text').innerText = 'Exam Attempt Completed Successfully!';
+    document.getElementById('prev-btn').style.display = 'none';
+    document.getElementById('next-btn').style.display = 'none';
+    document.getElementById('timer-display').style.display = 'none';
+    
+    document.getElementById('result-area').innerHTML = `
+        <div style="font-size: 1.8rem; margin-bottom:10px;">Final Score: ${correctCount} / ${activeQuestions.length}</div>
+        <div style="font-size: 1.1rem; color:#5f6368; margin-bottom:20px;">Percentage: ${Math.round((correctCount/activeQuestions.length)*100)}%</div>
+        <button class="nav-btn" onclick="reloadDashboardPortal()">Back to Dashboard</button>
+    `;
+}
+
+function reloadDashboardPortal() {
+    // Reset structural display views back to dashboard state layout
+    document.getElementById('dashboard').style.display = 'block';
+    document.getElementById('quiz-window').style.display = 'none';
+    document.getElementById('prev-btn').style.display = 'inline-block';
+    document.getElementById('next-btn').style.display = 'inline-block';
+    document.getElementById('timer-display').style.display = 'inline-block';
+}
