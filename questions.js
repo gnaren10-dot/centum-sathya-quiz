@@ -261,3 +261,29 @@ function reloadDashboardPortal() {
     document.getElementById('next-btn').style.display = 'inline-block';
     document.getElementById('timer-display').style.display = 'inline-block';
 }
+function loginAsAdmin() {
+    // 1. Ask for the Admin Username
+    const username = prompt("Enter Admin Username (e.g., AK or Satya):");
+    
+    if (!username) return; // Exit if they click cancel
+
+    // 2. Ask for the Password
+    const password = prompt(`Enter Password for ${username}:`);
+
+    // 3. Verify the Credentials
+    // WARNING: Tech-savvy students can see these passwords if they look at your GitHub files.
+    if (username.toUpperCase() === "AK" && password === "AK@Centum2026") {
+        alert("Welcome AK! Access Granted.");
+        window.location.href = "admin.html"; // Redirects to your admin page
+    } 
+    else if (username.toLowerCase() === "satya" && password === "Satya@Centum2026") {
+        alert("Welcome Satya! Access Granted.");
+        window.location.href = "admin.html"; // Redirects to your admin page
+    } 
+    else {
+        alert("Invalid Username or Password!");
+    }
+}
+
+    }
+}
