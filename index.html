@@ -560,3 +560,83 @@
     </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centum Sathya Tuition Centre - Quiz Portal</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        h1 { text-align: center; color: #1a73e8; margin-bottom: 5px; }
+        .sub-header { text-align: center; color: #5f6368; font-style: italic; margin-bottom: 30px; }
+        
+        /* Two Column Subject Layout */
+        .columns-container { display: flex; gap: 20px; margin-bottom: 30px; }
+        .subject-column { flex: 1; background: #f8f9fa; border: 1px solid #dadce0; border-radius: 8px; padding: 20px; }
+        .subject-title { font-size: 1.4rem; font-weight: bold; color: #202124; border-bottom: 2px solid #1a73e8; padding-bottom: 8px; margin-bottom: 15px; }
+        
+        .chapter-btn { display: block; width: 100%; text-align: left; background: white; border: 1px solid #ced4da; padding: 12px; margin-bottom: 10px; border-radius: 6px; cursor: pointer; font-size: 1rem; transition: all 0.2s; }
+        .chapter-btn:hover { background: #e8f0fe; border-color: #1a73e8; color: #1a73e8; }
+        
+        /* Exam Simulator Mode UI */
+        .quiz-container { display: none; background: #ffffff; border: 2px solid #1a73e8; padding: 25px; border-radius: 8px; }
+        .timer-box { font-size: 1.3rem; font-weight: bold; color: #d93025; background: #fce8e6; padding: 10px 20px; border-radius: 6px; display: inline-block; margin-bottom: 20px; border: 1px solid #fad2cf; }
+        .question { font-size: 1.2rem; font-weight: 600; margin-bottom: 20px; color: #202124; }
+        .options { list-style: none; padding: 0; }
+        .options li { margin-bottom: 12px; }
+        .options label { display: block; padding: 12px 15px; background: #f1f3f4; border: 1px solid #bdc1c6; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .options label:hover { background: #e8eaed; }
+        .options input { margin-right: 12px; transform: scale(1.2); vertical-align: middle; }
+        
+        .nav-btns { display: flex; justify-content: space-between; margin-top: 25px; }
+        .nav-btn { background: #1a73e8; color: white; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-size: 1rem; font-weight: bold; }
+        .nav-btn:hover { background: #1557b0; }
+        #result-area { margin-top: 25px; text-align: center; font-size: 1.4rem; font-weight: bold; color: #1e8e3e; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>CENTUM SATHYA TUITION CENTRE</h1>
+    <div class="sub-header">Trichy-620017 | Exam Simulation Environment</div>
+    
+    <!-- Main Dashboard with separate Subject Sections -->
+    <div id="dashboard">
+        <div class="columns-container">
+            <!-- Maths Section Column -->
+            <div class="subject-column">
+                <div class="subject-title">📐 Mathematics</div>
+                <button class="chapter-btn" onclick="startExamSimulator('maths_type1')">Type-1: Checking AP & Diff</button>
+                <button class="chapter-btn" onclick="startExamSimulator('maths_type2')">Type-2: Finding nth Term</button>
+                <button class="chapter-btn" onclick="startExamSimulator('maths_trig')">Trigonometric Identities</button>
+            </div>
+            
+            <!-- Science Section Column -->
+            <div class="subject-column">
+                <div class="subject-title">🔬 Science</div>
+                <button class="chapter-btn" onclick="startExamSimulator('science_light')">Light: Reflection & Refraction</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Exam Simulation Window -->
+    <div id="quiz-window" class="quiz-container">
+        <div class="timer-box" id="timer-display">⏱️ Time Remaining: --:--</div>
+        <div id="question-text" class="question"></div>
+        <ul id="options-list" class="options"></ul>
+        
+        <div class="nav-btns">
+            <button class="nav-btn" id="prev-btn" onclick="goToPrevQuestion()">Previous</button>
+            <button class="nav-btn" id="next-btn" onclick="goToNextQuestion()">Next Question</button>
+        </div>
+        <div id="result-area"></div>
+    </div>
+</div>
+
+<!-- Load Database First, Then Load Main Controller Logic -->
+<script src="questions.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
